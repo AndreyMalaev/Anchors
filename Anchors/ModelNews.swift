@@ -50,21 +50,46 @@ extension News {
         
         guard let contentBlocks = self.contentBlocks else { return nil }
         
-        var newsText = ""
+        var newsText = String.init()
+        
+        let numberOfParagraphs = self.numberOfContentBlocksInNews(withContentType: .paragraph)
+        var numberOfIterations = 0
+        
+        let dispathGroup = DispatchGroup.init()
         
         for contentBlock in contentBlocks {
             
             if let content = contentBlock.contentData {
                 switch content {
-                case .text(var text):
-                    newsText = newsText + text
+                case .text(let text):
+                    dispathGroup.enter()
+                        
+                        HTMLDecoder.removeHTMLfrom(inputString: text, withCompletion: { string in
+                            // newsText += string + "\n"
+                            numberOfIterations += 1
+                            // numberOfIterations != numberOfParagraphs ? newsText.append(string + "\n") : newsText.append(string)
+                            
+                            if numberOfIterations != numberOfParagraphs {
+                                newsText += string + String.paragraphSeparator
+                            } else {
+                                newsText += string
+                            }
+                            
+                            dispathGroup.leave()
+                        })
+                    
+                    dispathGroup.wait()
+                    
                 case .mediaContent: break
                 case .inlinetopic: break
                 }
             }
         }
-        
         return newsText
+    }
+    
+    func numberOfContentBlocksInNews(withContentType contentType: ContentBlockType) -> Int {
+        return self.contentBlocks?.filter{$0.contentType == contentType}.count ?? 0
     }
 }
 

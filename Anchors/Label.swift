@@ -33,7 +33,7 @@ class NewsTextLabel: UILabel {
     // MARK: - Setting Label
     fileprivate func settingsLabel() {
         
-        self.backgroundColor = .clear
+        self.backgroundColor = .orange
         self.contentMode = .scaleToFill
         self.textColor = .lentachGray
         self.numberOfLines = 0
@@ -70,56 +70,5 @@ extension NewsTextLabel {
             currectFrame.size.width = layoutWidth
             self.frame = currectFrame
         }
-    }
-}
-
-// MARK: - dont use
-class TitleNewsLabel: NewsTextLabel {
-    
-    // MARK: - Initializations
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.settingsTitleNewsLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        self.settingsTitleNewsLabel()
-    }
-    
-    // MARK: - Setting Label
-    
-    fileprivate func settingsTitleNewsLabel() {
-        
-        self.backgroundColor = .red
-        self.font = UIFont.italicSystemFont(ofSize: 30)
-    }
-}
-
-class TextNewsLabel: NewsTextLabel {
-    
-    // MARK: - Initializations
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.settingsTextNewsLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        self.settingsTextNewsLabel()
-    }
-    
-    // MARK: - Setting Label
-    
-    fileprivate func settingsTextNewsLabel() {
-        
-        self.backgroundColor = .lightGray
-        self.font = UIFont.italicSystemFont(ofSize: 20)
     }
 }

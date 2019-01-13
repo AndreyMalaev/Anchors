@@ -21,6 +21,23 @@ extension UIActivityIndicatorView {
     }
 }
 
+// MARK: - extension for hide or show navigation bar
+extension UINavigationBar {
+    
+    func isHidden(value: Bool) {
+        switch value {
+        case true:
+            self.setBackgroundImage(UIImage(), for: .default)
+            self.shadowImage = UIImage()
+            self.isTranslucent = true
+        case false:
+            self.setBackgroundImage(nil, for: .default)
+            self.shadowImage = nil
+            self.isTranslucent = false
+        }
+    }
+}
+
 extension UITableView {
     func setScrollIndicatorColor(color: UIColor) {
         for view in self.subviews {
@@ -33,107 +50,26 @@ extension UITableView {
         self.flashScrollIndicators()
     }
     
-    
-    func updateHeightHeaderView() {
+    func updateHeaderViewHeight() {
         if let headerView = self.tableHeaderView {
-
-            print("tableHeaderView frame: - \(headerView.frame)")
-            print("tableHeaderView bounds: - \(headerView.bounds)")
-            print("tableView content offset - \(self.contentOffset.y)")
-            
-            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            var headerFrame = headerView.frame
-            
-            if height != headerFrame.size.height {
-                headerFrame.size.height = height
-                headerView.frame = headerFrame
-                self.tableHeaderView = headerView
-                
-
-                print("============")
-                print("tableHeaderView frame: - \(headerView.frame)")
-                print("tableHeaderView bounds: - \(headerView.bounds)")
-                print("tableView content offset - \(self.contentOffset.y)")
-            }
+            headerView.layoutIfNeeded()
+            self.tableHeaderView = headerView
         }
     }
-}
-
-extension UITableView {
     
-    func customSetTableHeaderView(headerView: UIView) {
-        
+    func setHeaderView(headerView: UIView) {
         self.tableHeaderView = headerView
         
-        guard let tableHeaderViewSuperview = tableHeaderView?.superview else {
-            assertionFailure("This should not be reached!")
-            return
-        }
+        headerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        headerView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        headerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         
-        headerView.setNeedsLayout()
-        headerView.layoutIfNeeded()
-        
-        tableHeaderViewSuperview.widthAnchor.constraint(equalTo: headerView.widthAnchor).isActive = true
-        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        tableHeaderViewSuperview.heightAnchor.constraint(equalToConstant: height).isActive = true
+        self.updateHeaderViewHeight()
     }
 }
 
-extension UITableView {
-    
-    // https://stackoverflow.com/a/43539653
-    
-    func setTableHeaderView(headerView: UIView?) {
-        // set the headerView
-        tableHeaderView = headerView
-        
-        // check if the passed view is nil
-        guard let headerView = headerView else { return }
-        
-        // check if the tableHeaderView superview view is nil just to avoid
-        // to use the force unwrapping later. In case it fail something really
-        // wrong happened
-        guard let tableHeaderViewSuperview = tableHeaderView?.superview else {
-            assertionFailure("This should not be reached!")
-            return
-        }
-        
-        // force updated layout
-        headerView.setNeedsLayout()
-        headerView.layoutIfNeeded()
-        
-        // set tableHeaderView width
-        tableHeaderViewSuperview.addConstraint(headerView.widthAnchor.constraint(equalTo: tableHeaderViewSuperview.widthAnchor, multiplier: 1.0))
-        
-        // set tableHeaderView height
-        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        tableHeaderViewSuperview.addConstraint(headerView.heightAnchor.constraint(equalToConstant: height))
-    }
-    
-    func setTableFooterView(footerView: UIView?) {
-        // set the footerView
-        tableFooterView = footerView
-        
-        // check if the passed view is nil
-        guard let footerView = footerView else { return }
-        
-        // check if the tableFooterView superview view is nil just to avoid
-        // to use the force unwrapping later. In case it fail something really
-        // wrong happened
-        guard let tableFooterViewSuperview = tableFooterView?.superview else {
-            assertionFailure("This should not be reached!")
-            return
-        }
-        
-        // force updated layout
-        footerView.setNeedsLayout()
-        footerView.layoutIfNeeded()
-        
-        // set tableFooterView width
-        tableFooterViewSuperview.addConstraint(footerView.widthAnchor.constraint(equalTo: tableFooterViewSuperview.widthAnchor, multiplier: 1.0))
-        
-        // set tableFooterView height
-        let height = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        tableFooterViewSuperview.addConstraint(footerView.heightAnchor.constraint(equalToConstant: height))
+extension String {
+    static var paragraphSeparator: String {
+        return "\n\n"
     }
 }

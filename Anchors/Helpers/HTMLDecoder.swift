@@ -24,19 +24,19 @@ class HTMLDecoder {
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [ .documentType: NSAttributedString.DocumentType.html,
                                                                                 .characterEncoding: String.Encoding.utf8.rawValue ]
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            //DispatchQueue.global(qos: .userInitiated).async {
                 
                 let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil)
                 
-                DispatchQueue.main.async {
+                //DispatchQueue.main.async {
                     
                     if let outputString = attributedString?.string {
                         completion(outputString)
                     } else {
                         completion(inputString)
                     }
-                }
-            }
+                //}
+            // }
         } else {
             completion(inputString)
         }

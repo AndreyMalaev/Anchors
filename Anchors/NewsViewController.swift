@@ -10,17 +10,21 @@ import UIKit
 
 class NewsViewController: UIViewController {
     
+    // model property
     var news: SingleLatestNews?
     var newsContent: LentaAPINewsResponse? {
         didSet {
             print("newsContent sucsses loaded")
-            // self.configureContentViews()
+            self.configureContentViews()
         }
     }
+    
+    // view property
     
     let tableView: UITableView = {
         let tableView = UITableView.init(frame: CGRect.zero, style: .plain)
         tableView.tableFooterView = UIView.init()
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         tableView.contentInsetAdjustmentBehavior = .never
         return tableView
     }()
@@ -54,7 +58,7 @@ class NewsViewController: UIViewController {
         self.setupContentNewsView()
         
         // news request
-        self.requestNews1()
+        self.requestNews()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,23 +74,6 @@ class NewsViewController: UIViewController {
         super.viewDidAppear(animated)
         // setup color scroll indicator in table view
         self.tableView.setScrollIndicatorColor(color: UIColor.lentachGray)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if let headerView = tableView.tableHeaderView {
-            
-            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            var headerFrame = headerView.frame
-            
-            //Comparison necessary to avoid infinite loop
-            if height != headerFrame.size.height {
-                headerFrame.size.height = height
-                headerView.frame = headerFrame
-                tableView.tableHeaderView = headerView
-            }
-        }
     }
 }
 
@@ -124,31 +111,29 @@ extension NewsViewController {
     
     func setupContentNewsView() {
         
-        let contentNewsView = ContentNewsView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.bounds.width, height: 200))
+        let containerNewsView = ConteinerNewsView.init(frame: CGRect.init(x: 0,
+                                                                          y: 0,
+                                                                      width: self.tableView.bounds.width,
+                                                                     height: 0))
         
-        //self.tableView.customSetTableHeaderView(headerView: contentNewsView)
-        
-        self.tableView.tableHeaderView = contentNewsView
-        
-        guard let imageStringURL = self.news?.image?.url else { return }
-        
-        Network.loadImage(fromStringURL: imageStringURL) { [weak self] loadedImage in
-            
-            if let image = loadedImage {
+        if let newsImageStringURL = self.news?.image?.url {
+            Network.loadImage(fromStringURL: newsImageStringURL) { [weak containerNewsView] image in
                 DispatchQueue.main.async {
-                    if let header = self?.tableView.tableHeaderView as? ContentNewsView {
-                        header.newsImageView.setWithAnimation(image: image)
-                    }
-                    
-                    if let author = self?.news?.image?.author {
-                        if let header = self?.tableView.tableHeaderView as? ContentNewsView {
-                            header.newsImageAuthorLabel.text = author
-                        }
-                    }
-                    self?.viewDidLayoutSubviews()
+                    containerNewsView?.newsImageView.image = image
                 }
             }
         }
+        
+        if let newsDate = self.news?.info?.date {
+            containerNewsView.newsDateLabel.text = DateManager.createStringDate(withSecondsIntervalSince1970: newsDate)
+        }
+        
+        if let newsTitle = self.news?.info?.title {
+            containerNewsView.newsTitleLabel.text = newsTitle
+        }
+        
+        self.tableView.setHeaderView(headerView: containerNewsView)
+        self.tableView.updateHeaderViewHeight()
     }
 }
 
@@ -162,11 +147,11 @@ extension NewsViewController: UITableViewDelegate {
 extension NewsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.newsContent != nil ? 2 : 5
+        return self.newsContent != nil ? 2 : 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.newsContent != nil ? 3 : 5
+        return self.newsContent != nil ? 3 : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -184,161 +169,28 @@ extension NewsViewController {
     func configureContentViews() {
         
         guard let text = self.newsContent?.news?.newsTextContent() else { return }
-        
-        HTMLDecoder.removeHTMLfrom(inputString: text) { textWithoutHTML in
-            print(textWithoutHTML)
-            
-            if let date = self.news?.info?.date {
-                if let header = self.tableView.tableHeaderView as? ContentNewsView {
-                    header.newsDateLabel.text = DateManager.createStringDate(withSecondsIntervalSince1970: date)
-                    header.newsDateLabel.updateLabelFrame()
-                    header.sizeToFit()
-                    // self.tableView.updateHeightHeaderView()
-                }
-            }
-            
-            if let title = self.news?.info?.title {
-                if let header = self.tableView.tableHeaderView as? ContentNewsView {
-                    header.newsTitleLabel.text = title
-                    header.newsTitleLabel.updateLabelFrame()
-                    header.sizeToFit()
-                    // self.tableView.updateHeightHeaderView()
-                }
-            }
-            
-            if let header = self.tableView.tableHeaderView as? ContentNewsView {
-                header.newsTextLabel.text = textWithoutHTML
-                header.newsTextLabel.updateLabelFrame()
-                header.sizeToFit()
-                // self.tableView.updateHeightHeaderView()
-            }
-            
-            
-            self.tableView.updateHeightHeaderView()
-            self.tableView.reloadData()
-            
-            
-            guard let header = self.tableView.tableHeaderView as? ContentNewsView else { return }
-            
-            let height1 = header.bounds.height
-            print("current height - \(height1)")
-            let height2 = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            print("layout height - \(height2)")
-            
-            print(header.newsImageView.frame)
-            print(header.newsImageAuthorLabel.frame)
-            print(header.newsDateLabel.frame)
-            print(header.newsTitleLabel.frame)
-            print(header.newsTextLabel.frame)
-            
-            let heightAllObject = header.newsImageView.frame.height + header.newsDateLabel.frame.height + header.newsTitleLabel.frame.height + header.newsTextLabel.frame.height
-            print("height all object - \(heightAllObject)")
-            
-            
-            let heightCells = 6 * 44
-            // let totalHeight = Int(height2) + heightCells
-            let totalHeight = Int(heightAllObject) + heightCells
-            
-            print("contentsize before update - \(self.tableView.contentSize)")
-            
-            self.tableView.contentSize = CGSize.init(width: Int(self.tableView.frame.width), height: totalHeight)
-            
-            print("contentsize after update - \(self.tableView.contentSize)")
-            
-            
-            self.tableView.tableHeaderView?.sizeToFit()
+
+        if let header = self.tableView.tableHeaderView as? ConteinerNewsView {
+            print(text)
+            header.newsTextLabel.text = text
         }
+        
+        self.tableView.updateHeaderViewHeight()
+        
+        self.tableView.reloadData()
     }
-    
 }
 
 // MARK: - extension for network request
 extension NewsViewController {
     
-    func requestNews1() {
+    func requestNews() {
         
         guard let stringURL = self.news?.URLs?.api else { return }
         guard let newsURL = URL.init(string: stringURL) else { return }
         
         NewsManager.requestNews(fromURL: newsURL) { [weak self] newsContent in
             self?.newsContent = newsContent
-        }
-    }
-    
-    /*
-    func requestNews() {
-        
-        guard let stringURL = self.news?.URLs?.api else { return }
-        guard let newsURL = URL.init(string: stringURL) else { return }
-        
-        NewsManager.requestNews(fromURL: newsURL) { response in
-            // print(response ?? "kek")
-            
-            
-            
-            if let contentBlocks = response?.news?.contentBlocks {
-                for contentBlock in contentBlocks {
-                    print("content type: \(contentBlock.contentType?.rawValue ?? "no content type")")
-                    
-                    if let contentType = contentBlock.contentType {
-                        print(contentType)
-                    }
-                    
-                    if let content = contentBlock.contentData {
-                        switch content {
-                        case .mediaContent(let media):
-                            print(media)
-                        case .text(let text):
-                            print(text)
-                        case .inlinetopic(let topic):
-                            print(topic)
-                        }
-                    }
-                }
-            }
-            
-            print("ANNOUNCE")
-            print("news announce: \(response?.news?.newsInfo?.info?.announce ?? "no announce")")
-            
-            /*
-            if let thematicNews = response?.news?.thematicNews {
-                for news in thematicNews {
-                    print("news type: \(news.type ?? "no news type")")
-                    print("***")
-                    print("thematic news info")
-                    print("news announce: \(news.thematicNewsInfo?.announce ?? "no news announce")")
-                    print("news rightcol: \(news.thematicNewsInfo?.rightcol ?? "no news rightcol")")
-                    print("news title: \(news.thematicNewsInfo?.title ?? "no news title")")
-                    print("***")
-                    print("thematic news urls")
-                    print("news api: \(news.thematicNewsURLs?.api ?? "no news api")")
-                    print("news site: \(news.thematicNewsURLs?.site ?? "no news site")")
-                    print("***")
-                    print("thematic news image")
-                    print("news author: \(news.thematicNewsImage?.author ?? "no news author")")
-                    print("news url: \(news.thematicNewsImage?.url ?? "no news url")")
-                }
-            }
-            */
-        }
-    }
-    */
-}
-
-// MARK: - extensions for any types
-// MARK: - extension for hide or show navigation bar
-extension UINavigationBar {
-    
-    func isHidden(value: Bool) {
-        switch value {
-        case true:
-            self.setBackgroundImage(UIImage(), for: .default)
-            self.shadowImage = UIImage()
-            self.isTranslucent = true
-        case false:
-            self.setBackgroundImage(nil, for: .default)
-            self.shadowImage = nil
-            self.isTranslucent = false
         }
     }
 }

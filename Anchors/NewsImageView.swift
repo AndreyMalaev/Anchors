@@ -24,8 +24,8 @@ class NewsImageView: UIImageView {
     // MARK: - Setting ImageView
     fileprivate func settingsImageView() {
         
-        self.contentMode = .scaleAspectFill
-        self.backgroundColor = .lentachGray
+        self.contentMode = .scaleToFill
+        self.backgroundColor = .orange
     }
 }
 
