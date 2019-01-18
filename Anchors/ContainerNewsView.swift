@@ -12,18 +12,22 @@ class ConteinerNewsView: UIView {
     
     // MARK: - UI Properties
     var newsImageView: NewsImageView!
+    var newsImageAuthorView: ImageAuthorView!
     var newsDateLabel: NewsTextLabel!
     var newsTitleLabel: NewsTextLabel!
     var newsTextLabel: NewsTextLabel!
+    
+    // MARK: - Constraint Properties
+    var heightImageAuthorViewConstraint: NSLayoutConstraint?
     
     // MARK: - Initializations
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .lightGray
         
         self.setupNewsImageView()
+        self.setupImageAuthorView()
         self.setupDateLabel()
         self.seputTitleNewsLabel()
         self.setupNewsTextLabel()
@@ -51,14 +55,31 @@ extension ConteinerNewsView {
         // self.newsImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
     }
     
+    fileprivate func setupImageAuthorView() {
+        
+        self.newsImageAuthorView = ImageAuthorView.init(frame: CGRect.zero)
+        self.newsImageAuthorView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.newsImageView.addSubview(self.newsImageAuthorView)
+        
+        self.newsImageAuthorView.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
+        self.newsImageAuthorView.leftAnchor.constraint(equalTo: self.newsImageView.leftAnchor).isActive = true
+        self.newsImageAuthorView.rightAnchor.constraint(equalTo: self.newsImageView.rightAnchor).isActive = true
+        self.newsImageAuthorView.bottomAnchor.constraint(equalTo: self.newsImageView.bottomAnchor).isActive = true
+        
+        self.heightImageAuthorViewConstraint = self.newsImageAuthorView.topAnchor.constraint(equalTo: self.newsImageView.topAnchor, constant: 180)
+        
+        self.heightImageAuthorViewConstraint?.isActive = true
+    }
+    
     fileprivate func setupDateLabel() {
         
-        self.newsDateLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 14)
+        self.newsDateLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 18)
         self.newsDateLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(self.newsDateLabel)
         
-        self.newsDateLabel.topAnchor.constraint(equalTo: self.newsImageView.bottomAnchor, constant: +20).isActive = true
+        self.newsDateLabel.topAnchor.constraint(equalTo: self.newsImageView.bottomAnchor, constant: +10).isActive = true
         self.newsDateLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: +15).isActive = true
         self.newsDateLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
         // bottom anchor
@@ -72,7 +93,7 @@ extension ConteinerNewsView {
         
         self.addSubview(self.newsTitleLabel)
         
-        self.newsTitleLabel.topAnchor.constraint(equalTo: self.newsDateLabel.bottomAnchor, constant: +20).isActive = true
+        self.newsTitleLabel.topAnchor.constraint(equalTo: self.newsDateLabel.bottomAnchor, constant: +10).isActive = true
         self.newsTitleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: +15).isActive = true
         self.newsTitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
         // bottom anchor
@@ -81,14 +102,14 @@ extension ConteinerNewsView {
     
     fileprivate func setupNewsTextLabel() {
         
-        self.newsTextLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 15)
+        self.newsTextLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 18)
         self.newsTextLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(self.newsTextLabel)
         
-        self.newsTextLabel.topAnchor.constraint(equalTo: self.newsTitleLabel.bottomAnchor, constant: +20).isActive = true
+        self.newsTextLabel.topAnchor.constraint(equalTo: self.newsTitleLabel.bottomAnchor, constant: +10).isActive = true
         self.newsTextLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: +15).isActive = true
         self.newsTextLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
-        self.newsTextLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
+        self.newsTextLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
     }
 }

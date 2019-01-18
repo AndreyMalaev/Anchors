@@ -14,13 +14,11 @@ class NewsViewController: UIViewController {
     var news: SingleLatestNews?
     var newsContent: LentaAPINewsResponse? {
         didSet {
-            print("newsContent sucsses loaded")
             self.configureContentViews()
         }
     }
     
     // view property
-    
     let tableView: UITableView = {
         let tableView = UITableView.init(frame: CGRect.zero, style: .plain)
         tableView.tableFooterView = UIView.init()
@@ -124,6 +122,10 @@ extension NewsViewController {
             }
         }
         
+        if let newsImageAuthor = self.news?.image?.author {
+            containerNewsView.newsImageAuthorView.imageAuthorLabel.text = newsImageAuthor
+        }
+        
         if let newsDate = self.news?.info?.date {
             containerNewsView.newsDateLabel.text = DateManager.createStringDate(withSecondsIntervalSince1970: newsDate)
         }
@@ -168,6 +170,12 @@ extension NewsViewController {
     
     func configureContentViews() {
         
+        if let imageDescription = self.newsContent?.news?.newsInfo?.newsImage?.description {
+            if let header = self.tableView.tableHeaderView as? ConteinerNewsView {
+                header.newsImageAuthorView.imageDescriptionLabel.text = imageDescription
+            }
+        }
+        
         guard let text = self.newsContent?.news?.newsTextContent() else { return }
 
         if let header = self.tableView.tableHeaderView as? ConteinerNewsView {
@@ -176,7 +184,6 @@ extension NewsViewController {
         }
         
         self.tableView.updateHeaderViewHeight()
-        
         self.tableView.reloadData()
     }
 }

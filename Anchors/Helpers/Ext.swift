@@ -73,3 +73,39 @@ extension String {
         return "\n\n"
     }
 }
+
+extension UIView {
+    func addGradient(gradientViewWithFrame frame: CGRect,
+                     andLocations locations: [NSNumber]?,
+                     andColorsArray colorsArray: [CGColor],
+                     andStartPoint startPoint: CGPoint?,
+                     andEndPoint endPoint: CGPoint?) {
+        
+        let gradient = CAGradientLayer()
+        
+        gradient.frame = self.bounds
+        gradient.colors = colorsArray
+        
+        if let startPoint = startPoint, let endPoint = endPoint {
+            gradient.startPoint = startPoint
+            gradient.endPoint = endPoint
+        }
+        
+        if let locations = locations {
+            gradient.locations = locations
+        }
+        
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+}
+
+extension UIView {
+    
+    func superview<T>(of type: T.Type) -> T? {
+        return superview as? T ?? superview.flatMap { $0.superview(of: type) }
+    }
+    
+    func subview<T>(of type: T.Type) -> T? {
+        return subviews.compactMap { $0 as? T ?? $0.subview(of: type) }.first
+    }
+}

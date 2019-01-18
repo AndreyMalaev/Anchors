@@ -64,6 +64,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="FAB-Bc-g5B" id="bm1-2B-AMq"/>
                             <outlet property="delegate" destination="FAB-Bc-g5B" id="O2v-fd-1K6"/>

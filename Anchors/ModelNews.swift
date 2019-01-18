@@ -65,9 +65,7 @@ extension News {
                     dispathGroup.enter()
                         
                         HTMLDecoder.removeHTMLfrom(inputString: text, withCompletion: { string in
-                            // newsText += string + "\n"
                             numberOfIterations += 1
-                            // numberOfIterations != numberOfParagraphs ? newsText.append(string + "\n") : newsText.append(string)
                             
                             if numberOfIterations != numberOfParagraphs {
                                 newsText += string + String.paragraphSeparator
@@ -96,15 +94,18 @@ extension News {
 struct NewsInfo: Decodable {
     
     let info: Info?
+    let newsImage: NewsImage?
     
     enum CodingKeys: String, CodingKey {
         case info
+        case newsImage = "title_image"
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.info = try container.decodeIfPresent(Info.self, forKey: .info)
+        self.newsImage = try container.decodeIfPresent(NewsImage.self, forKey: .newsImage)
     }
 }
 
@@ -120,6 +121,21 @@ struct Info: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.announce = try container.decodeIfPresent(String.self, forKey: .announce)
+    }
+}
+
+struct NewsImage: Decodable {
+    
+    let description: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case description = "caption"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
     }
 }
 

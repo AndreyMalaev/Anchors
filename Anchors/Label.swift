@@ -33,42 +33,9 @@ class NewsTextLabel: UILabel {
     // MARK: - Setting Label
     fileprivate func settingsLabel() {
         
-        self.backgroundColor = .orange
         self.contentMode = .scaleToFill
-        self.textColor = .lentachGray
         self.numberOfLines = 0
         self.textAlignment = .left
         self.sizeToFit()
-    }
-}
-
-extension NewsTextLabel {
-    
-    func updateLabelFrame() {
-        
-        self.updateLabelHeight()
-        self.updateLabelWidth()
-    }
-    
-    func updateLabelHeight() {
-        
-        let layoutHeight = self.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        var currectFrame = self.frame
-        
-        if layoutHeight != currectFrame.size.height {
-            currectFrame.size.height = layoutHeight
-            self.frame = currectFrame
-        }
-    }
-    
-    func updateLabelWidth() {
-        
-        let layoutWidth = self.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width
-        var currectFrame = self.frame
-        
-        if layoutWidth != currectFrame.size.width {
-            currectFrame.size.width = layoutWidth
-            self.frame = currectFrame
-        }
     }
 }
