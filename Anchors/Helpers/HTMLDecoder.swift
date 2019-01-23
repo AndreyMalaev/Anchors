@@ -19,7 +19,7 @@ class HTMLDecoder {
             return
         }
         
-        if self.сontainHTML(inString: inputString) {
+        if self.containHTML(inString: inputString) {
             
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [ .documentType: NSAttributedString.DocumentType.html,
                                                                                 .characterEncoding: String.Encoding.utf8.rawValue ]
@@ -36,7 +36,7 @@ class HTMLDecoder {
         }
     }
     
-    static func сontainHTML(inString string: String) -> Bool {
+    static func containHTML(inString string: String) -> Bool {
         if string.range(of: self.HTMLSymbols) != nil {
             return true
         } else {

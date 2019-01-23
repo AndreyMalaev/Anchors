@@ -46,7 +46,7 @@ struct News: Decodable {
 
 extension News {
     
-    func newsTextContent() -> String? {
+    func textContent() -> String? {
         
         guard let contentBlocks = self.contentBlocks else { return nil }
         
@@ -88,6 +88,38 @@ extension News {
     
     func numberOfContentBlocksInNews(withContentType contentType: ContentBlockType) -> Int {
         return self.contentBlocks?.filter{$0.contentType == contentType}.count ?? 0
+    }
+    
+    func videoContent() -> MediaContent? {
+        
+        if (self.numberOfContentBlocksInNews(withContentType: .video)) == 0 {
+            return nil
+        }
+        
+        for contentBlock in self.contentBlocks! {
+            
+            if let content = contentBlock.contentData {
+                switch content {
+                case .text, .inlinetopic: break
+                case .mediaContent(let content): return content
+                }
+            }
+        }
+        return nil
+    }
+    
+    func previewImageURL() -> String? {
+        
+        if (self.numberOfContentBlocksInNews(withContentType: .video)) == 0 {
+            return nil
+        }
+        
+        if let block = self.contentBlocks?.first(where: {$0.previewImageURL != nil}) {
+            if let stringPreviewImageURL = block.previewImageURL {
+                return stringPreviewImageURL
+            }
+        }
+        return nil
     }
 }
 
@@ -174,10 +206,12 @@ struct ContentBlockTest: Decodable {
     
     let contentType: ContentBlockType?
     let contentData: Content?
+    let previewImageURL: String?
     
     enum CodingKeys: String, CodingKey {
         case contentType = "type"
         case contentData = "content"
+        case previewImageURL = "preview_image_url"
     }
     
     init(from decoder: Decoder) throws {
@@ -185,6 +219,7 @@ struct ContentBlockTest: Decodable {
         
         self.contentType = try container.decodeIfPresent(ContentBlockType.self, forKey: .contentType)
         self.contentData = try container.decodeIfPresent(Content.self, forKey: .contentData)
+        self.previewImageURL = try container.decodeIfPresent(String.self, forKey: .previewImageURL)
     }
 }
 
@@ -232,7 +267,7 @@ struct MediaContent: Decodable {
     let url: String?
     
     enum CodingKeys: String, CodingKey {
-        case description
+        case description = "caption"
         case url = "watch_url"
     }
     

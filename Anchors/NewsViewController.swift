@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 class NewsViewController: UIViewController {
     
@@ -14,7 +16,8 @@ class NewsViewController: UIViewController {
     var news: SingleLatestNews?
     var newsContent: LentaAPINewsResponse? {
         didSet {
-            self.configureContentViews()
+            self.configureNewsHeaderViewWithlLoadedData()
+            print("newsContent didSet succses")
         }
     }
     
@@ -35,25 +38,25 @@ class NewsViewController: UIViewController {
         return activityIndicator
     }()
     
+    private var newsHeaderView: NewsHeaderView!
+    
     // view controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // print input news
-        print(news ?? "luuul")
         
         // hide navigation bar
         self.navigationController?.navigationBar.isHidden(value: true)
         
         // setup table view
-        self.setupTableViewAnchors()
-        self.setupTableViewProtocols()
+        setupTableViewAnchors()
+        setupTableViewProtocols()
         
         // setup activity indicator
-        self.setupActivityIndicatorAnchors()
+        setupActivityIndicatorAnchors()
         
         //
-        self.setupContentNewsView()
+        setupNewsHeaderView()
+        configureNewsHeaderViewWithAvailadleData()
         
         // news request
         self.requestNews()
@@ -75,16 +78,16 @@ class NewsViewController: UIViewController {
     }
 }
 
-// MARK: - extensions for setup ui controller
-// MARK: - extensions for setup table view
+// MARK: - Extensions For Setup UI Controller
+// MARK: - Extensions For Setup TableView
 extension NewsViewController {
     
-    func setupTableViewProtocols() {
+    private func setupTableViewProtocols() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
     
-    func setupTableViewAnchors() {
+    private func setupTableViewAnchors() {
         self.view.addSubview(self.tableView)
         
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,10 +98,10 @@ extension NewsViewController {
     }
 }
 
-// MARK: - extension for setup activity indicator
+// MARK: - Extension For Setup Activity Indicator
 extension NewsViewController {
     
-    func setupActivityIndicatorAnchors() {
+    private func setupActivityIndicatorAnchors() {
         
         self.view.addSubview(self.activityIndicator)
         
@@ -106,46 +109,26 @@ extension NewsViewController {
         self.activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         self.activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     }
+}
+
+// MARK: - Extension For Setup Activity Indicator
+extension NewsViewController {
     
-    func setupContentNewsView() {
+    private func setupNewsHeaderView() {
         
-        let containerNewsView = ConteinerNewsView.init(frame: CGRect.init(x: 0,
-                                                                          y: 0,
-                                                                      width: self.tableView.bounds.width,
-                                                                     height: 0))
-        
-        if let newsImageStringURL = self.news?.image?.url {
-            Network.loadImage(fromStringURL: newsImageStringURL) { [weak containerNewsView] image in
-                DispatchQueue.main.async {
-                    containerNewsView?.newsImageView.image = image
-                }
-            }
-        }
-        
-        if let newsImageAuthor = self.news?.image?.author {
-            containerNewsView.newsImageAuthorView.imageAuthorLabel.text = newsImageAuthor
-        }
-        
-        if let newsDate = self.news?.info?.date {
-            containerNewsView.newsDateLabel.text = DateManager.createStringDate(withSecondsIntervalSince1970: newsDate)
-        }
-        
-        if let newsTitle = self.news?.info?.title {
-            containerNewsView.newsTitleLabel.text = newsTitle
-        }
-        
-        self.tableView.setHeaderView(headerView: containerNewsView)
-        self.tableView.updateHeaderViewHeight()
+        self.newsHeaderView = NewsHeaderView.init(frame: CGRect.zero)
+        self.newsHeaderView.delegate = self
+        self.tableView.setHeaderView(headerView: newsHeaderView)
     }
 }
 
-// MARK: - Extensions for table view protocols
-// MARK: - Extension for table view delegate
+// MARK: - Extensions For TableView Protocols
+// MARK: - Extension For TableView DelegateProtocol
 extension NewsViewController: UITableViewDelegate {
     
 }
 
-// MARK: - Extension for table view data source
+// MARK: - Extension For TableView DataSourceProtocol
 extension NewsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -164,31 +147,52 @@ extension NewsViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - extension for update content views after load news detail content
-
+// MARK: - Extension For Configure NewsHeaderView
 extension NewsViewController {
     
-    func configureContentViews() {
+    private func configureNewsHeaderViewWithAvailadleData() {
         
-        if let imageDescription = self.newsContent?.news?.newsInfo?.newsImage?.description {
-            if let header = self.tableView.tableHeaderView as? ConteinerNewsView {
-                header.newsImageAuthorView.imageDescriptionLabel.text = imageDescription
+        if let newsImageStringURL = self.news?.image?.url {
+            Network.loadImage(fromStringURL: newsImageStringURL) { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.newsHeaderView.setNewsImage(image)
+                }
             }
         }
-        
-        guard let text = self.newsContent?.news?.newsTextContent() else { return }
 
-        if let header = self.tableView.tableHeaderView as? ConteinerNewsView {
-            print(text)
-            header.newsTextLabel.text = text
+        self.newsHeaderView.setImageAuthor(self.news?.image?.author)
+
+ 
+        if let newsDate = self.news?.info?.date {
+            let dateString = DateManager.createStringDate(withSecondsIntervalSince1970: newsDate)
+            self.newsHeaderView.setDateNews(dateString)
         }
+ 
+        self.newsHeaderView.setTitleNews(news?.info?.title)
+        self.newsHeaderView.setAnnounceNews(news?.info?.rightcol)
         
+        self.tableView.updateHeaderViewHeight()
+    }
+    
+    func configureNewsHeaderViewWithlLoadedData() {
+        
+        self.newsHeaderView.setImageDescription(self.newsContent?.news?.newsInfo?.newsImage?.description)
+        self.newsHeaderView.setTextNews(self.newsContent?.news?.textContent())
+        
+        if let stringPreviewImageURL = self.newsContent?.news?.previewImageURL() {
+            Network.loadImage(fromStringURL: stringPreviewImageURL) { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.newsHeaderView.setNewsVideoPreviewImage(image)
+                }
+            }
+        }
+
         self.tableView.updateHeaderViewHeight()
         self.tableView.reloadData()
     }
 }
 
-// MARK: - extension for network request
+// MARK: - Extension For Network Request
 extension NewsViewController {
     
     func requestNews() {
@@ -198,6 +202,25 @@ extension NewsViewController {
         
         NewsManager.requestNews(fromURL: newsURL) { [weak self] newsContent in
             self?.newsContent = newsContent
+            self?.activityIndicator.stopAnimating()
+        }
+    }
+}
+
+extension NewsViewController: NewsHeaderViewDelegate {
+    
+    func tapOnVideoContentInNewsHeaderView(_ newsHeaderView: NewsHeaderView) {
+        
+        guard let videoContent = self.newsContent?.news?.videoContent() else { return }
+        
+        guard let videoURL = URL.init(string: videoContent.url ?? "") else { return }
+        
+        let player = AVPlayer.init(url: videoURL)
+        let playerController = AVPlayerViewController.init()
+        playerController.player = player
+        
+        self.present(playerController, animated: true) {
+            playerController.player!.play()
         }
     }
 }

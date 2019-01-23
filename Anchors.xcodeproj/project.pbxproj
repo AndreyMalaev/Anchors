@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C717CFDF21F2848F00680AB9 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C717CFDE21F2848F00680AB9 /* GradientView.swift */; };
-		C719658421EBFF6E00A146FA /* ImageAuthorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C719658321EBFF6E00A146FA /* ImageAuthorView.swift */; };
+		C719658421EBFF6E00A146FA /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C719658321EBFF6E00A146FA /* InfoView.swift */; };
 		C727FDCF21BFE80A0005329A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C727FDCE21BFE80A0005329A /* AppDelegate.swift */; };
 		C727FDD121BFE80A0005329A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C727FDD021BFE80A0005329A /* ViewController.swift */; };
 		C727FDD421BFE80A0005329A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C727FDD221BFE80A0005329A /* Main.storyboard */; };
@@ -24,15 +24,15 @@
 		C737301C21CFCCE00069B82C /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C737301B21CFCCE00069B82C /* DateManager.swift */; };
 		C743CBF421C6D397002C4636 /* ModelLenta.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743CBF321C6D397002C4636 /* ModelLenta.swift */; };
 		C743CBF621C6D9BD002C4636 /* LentaNewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743CBF521C6D9BD002C4636 /* LentaNewsTableViewController.swift */; };
-		C743CBF821C6F272002C4636 /* work.swift in Sources */ = {isa = PBXBuildFile; fileRef = C743CBF721C6F272002C4636 /* work.swift */; };
 		C74F0CEC21E3BE940039DF33 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C74F0CEB21E3BE940039DF33 /* .gitignore */; };
-		C74F0CEE21E53DF80039DF33 /* ContainerNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74F0CED21E53DF80039DF33 /* ContainerNewsView.swift */; };
+		C74F0CEE21E53DF80039DF33 /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74F0CED21E53DF80039DF33 /* NewsHeaderView.swift */; };
 		C7792A2921D17BE100EE387A /* HTMLDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7792A2821D17BE100EE387A /* HTMLDecoder.swift */; };
+		C7FAAF3C21F681FA00E67A2D /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FAAF3B21F681FA00E67A2D /* VideoPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C717CFDE21F2848F00680AB9 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
-		C719658321EBFF6E00A146FA /* ImageAuthorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAuthorView.swift; sourceTree = "<group>"; };
+		C719658321EBFF6E00A146FA /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		C727FDCB21BFE80A0005329A /* Anchors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Anchors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C727FDCE21BFE80A0005329A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C727FDD021BFE80A0005329A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,10 +50,10 @@
 		C737301B21CFCCE00069B82C /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		C743CBF321C6D397002C4636 /* ModelLenta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLenta.swift; sourceTree = "<group>"; };
 		C743CBF521C6D9BD002C4636 /* LentaNewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LentaNewsTableViewController.swift; sourceTree = "<group>"; };
-		C743CBF721C6F272002C4636 /* work.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = work.swift; sourceTree = "<group>"; };
 		C74F0CEB21E3BE940039DF33 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		C74F0CED21E53DF80039DF33 /* ContainerNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerNewsView.swift; sourceTree = "<group>"; };
+		C74F0CED21E53DF80039DF33 /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
 		C7792A2821D17BE100EE387A /* HTMLDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLDecoder.swift; sourceTree = "<group>"; };
+		C7FAAF3B21F681FA00E67A2D /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,12 +98,12 @@
 				C737301921CE4A840069B82C /* NewsImageView.swift */,
 				C727FDCE21BFE80A0005329A /* AppDelegate.swift */,
 				C727FDD021BFE80A0005329A /* ViewController.swift */,
+				C717CFDE21F2848F00680AB9 /* GradientView.swift */,
 				C727FDD521BFE8280005329A /* Assets.xcassets */,
 				C727FDDA21BFE8280005329A /* Info.plist */,
-				C743CBF721C6F272002C4636 /* work.swift */,
-				C74F0CED21E53DF80039DF33 /* ContainerNewsView.swift */,
-				C719658321EBFF6E00A146FA /* ImageAuthorView.swift */,
-				C717CFDE21F2848F00680AB9 /* GradientView.swift */,
+				C74F0CED21E53DF80039DF33 /* NewsHeaderView.swift */,
+				C719658321EBFF6E00A146FA /* InfoView.swift */,
+				C7FAAF3B21F681FA00E67A2D /* VideoPlayerView.swift */,
 			);
 			path = Anchors;
 			sourceTree = "<group>";
@@ -201,20 +201,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				C727FDE721C416520005329A /* ModelNews.swift in Sources */,
-				C719658421EBFF6E00A146FA /* ImageAuthorView.swift in Sources */,
+				C719658421EBFF6E00A146FA /* InfoView.swift in Sources */,
 				C737301821CE480E0069B82C /* Label.swift in Sources */,
+				C7FAAF3C21F681FA00E67A2D /* VideoPlayerView.swift in Sources */,
 				C7792A2921D17BE100EE387A /* HTMLDecoder.swift in Sources */,
 				C727FDE121C050720005329A /* NewsViewController.swift in Sources */,
 				C717CFDF21F2848F00680AB9 /* GradientView.swift in Sources */,
 				C727FDE921C421C80005329A /* Network.swift in Sources */,
 				C743CBF621C6D9BD002C4636 /* LentaNewsTableViewController.swift in Sources */,
-				C743CBF821C6F272002C4636 /* work.swift in Sources */,
 				C737301C21CFCCE00069B82C /* DateManager.swift in Sources */,
 				C727FDE521C3D5E20005329A /* Ext.swift in Sources */,
 				C727FDD121BFE80A0005329A /* ViewController.swift in Sources */,
 				C737301A21CE4A840069B82C /* NewsImageView.swift in Sources */,
 				C727FDEB21C4233E0005329A /* NewsManager.swift in Sources */,
-				C74F0CEE21E53DF80039DF33 /* ContainerNewsView.swift in Sources */,
+				C74F0CEE21E53DF80039DF33 /* NewsHeaderView.swift in Sources */,
 				C727FDCF21BFE80A0005329A /* AppDelegate.swift in Sources */,
 				C743CBF421C6D397002C4636 /* ModelLenta.swift in Sources */,
 			);

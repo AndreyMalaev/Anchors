@@ -61,7 +61,6 @@ class LentaNewsTableViewController: UITableViewController {
         nextViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
 
     /*
     // Override to support conditional editing of the table view.
