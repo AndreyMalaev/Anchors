@@ -22,7 +22,8 @@ final class NewsHeaderView: UIView {
     private var newsAnnounceLabel: NewsTextLabel!
     private var newsTextLabel: NewsTextLabel!
     private var textSeparator: UIView!
-    private var newsVideoPreviewImageView: UIImageView!
+    // private var newsVideoPreviewImageView: UIImageView!
+    private var previewImageView: PreviewVideoView!
     
     // MARK: - Constraint Properties
     private var newsImageInfoViewHeightConstraint: NSLayoutConstraint?
@@ -56,7 +57,7 @@ final class NewsHeaderView: UIView {
     }
 }
 
-// MARK: - Setup UI
+// MARK: - Setup UI Constraints
 extension NewsHeaderView {
     
     fileprivate func setupNewsImageView() {
@@ -175,6 +176,7 @@ extension NewsHeaderView {
         self.textSeparartorBottomConstraints?.isActive = true
     }
     
+    /*
     fileprivate func setupNewsVideoPreviewImageView() {
         
         self.textSeparartorBottomConstraints?.isActive = false
@@ -190,6 +192,26 @@ extension NewsHeaderView {
         self.newsVideoPreviewImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         
         self.newsVideoPreviewImageView.layoutIfNeeded()
+    }
+    */
+    
+    private func setupPreviewImageViewWithDelegate(_ delegate: UIViewController?) {
+        
+        self.textSeparartorBottomConstraints?.isActive = false
+        
+        self.previewImageView = PreviewVideoView.init(frame: CGRect.init(x: 0, y: 0, width: 10, height: 200))
+        self.previewImageView.delegate = delegate as? PreviewVideoViewDelegate
+        
+        self.addSubview(self.previewImageView)
+        
+        self.previewImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.previewImageView.topAnchor.constraint(equalTo: self.titleSeparator.bottomAnchor, constant: +20).isActive = true
+        self.previewImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: +15).isActive = true
+        self.previewImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+        self.previewImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
+        
+        self.previewImageView.layoutIfNeeded()
+        
     }
 }
 
@@ -231,12 +253,18 @@ extension NewsHeaderView {
         self.newsTextLabel.text = text
     }
     
-    func setNewsVideoPreviewImage(_ image: UIImage?) {
-        if self.newsVideoPreviewImageView == nil {
-            setupNewsVideoPreviewImageView()
-            setupTapGestureRecognizerToNewsVideoPreviewImageView()
+    func setPreviewImage(_ image: UIImage?, withDelegateForVideoPlayer delegate: UIViewController?) {
+        if self.previewImageView == nil {
+            setupPreviewImageViewWithDelegate(delegate)
         }
-        self.newsVideoPreviewImageView.image = image
+        self.previewImageView.setPreviewImage(image)
+    }
+    
+    func setPreviewImageDescription(_ text: String?, withDelegateForVideoPlayer delegate: UIViewController?) {
+        if self.previewImageView == nil {
+            setupPreviewImageViewWithDelegate(delegate)
+        }
+        self.previewImageView.setDescription(text)
     }
 }
 
@@ -264,7 +292,7 @@ extension NewsHeaderView {
 
 // MARK: - Add Gesture Recognizer To Video Preview Image View
 extension NewsHeaderView {
-    
+    /*
     func setupTapGestureRecognizerToNewsVideoPreviewImageView() {
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapOnVideoContent))
         self.newsVideoPreviewImageView.addGestureRecognizer(tap)
@@ -275,6 +303,7 @@ extension NewsHeaderView {
         print("go play video")
         self.delegate?.tapOnVideoContentInNewsHeaderView(self)
     }
+    */
 }
 
 // MARK: - NewsHeaderViewDelegate

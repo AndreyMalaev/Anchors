@@ -27,6 +27,7 @@ class NewsViewController: UIViewController {
         tableView.tableFooterView = UIView.init()
         tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.delaysContentTouches = false
         return tableView
     }()
     
@@ -117,7 +118,6 @@ extension NewsViewController {
     private func setupNewsHeaderView() {
         
         self.newsHeaderView = NewsHeaderView.init(frame: CGRect.zero)
-        self.newsHeaderView.delegate = self
         self.tableView.setHeaderView(headerView: newsHeaderView)
     }
 }
@@ -182,9 +182,14 @@ extension NewsViewController {
         if let stringPreviewImageURL = self.newsContent?.news?.previewImageURL() {
             Network.loadImage(fromStringURL: stringPreviewImageURL) { [weak self] image in
                 DispatchQueue.main.async {
-                    self?.newsHeaderView.setNewsVideoPreviewImage(image)
+                    self?.newsHeaderView.setPreviewImage(image, withDelegateForVideoPlayer: self ?? nil)
                 }
             }
+        }
+        
+        if let videoContent = self.newsContent?.news?.videoContent() {
+            print(videoContent.description ?? "no description")
+            self.newsHeaderView.setPreviewImageDescription(videoContent.description, withDelegateForVideoPlayer: self)
         }
 
         self.tableView.updateHeaderViewHeight()
@@ -207,9 +212,9 @@ extension NewsViewController {
     }
 }
 
-extension NewsViewController: NewsHeaderViewDelegate {
+extension NewsViewController: PreviewVideoViewDelegate {
     
-    func tapOnVideoContentInNewsHeaderView(_ newsHeaderView: NewsHeaderView) {
+    func previewVideoViewUserPressPlayVideo(_ previewVideoView: PreviewVideoView) {
         
         guard let videoContent = self.newsContent?.news?.videoContent() else { return }
         

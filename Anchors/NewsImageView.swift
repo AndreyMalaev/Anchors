@@ -28,14 +28,3 @@ class NewsImageView: UIImageView {
         self.backgroundColor = .lentachGray
     }
 }
-
-extension NewsImageView {
-    
-    /// Set image with custom animation
-    func setWithAnimation(image: UIImage) {
-        
-        UIView.animate(withDuration: 3.0) {
-            self.image = image
-        }
-    }
-}
