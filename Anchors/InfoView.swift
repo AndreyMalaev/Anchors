@@ -34,7 +34,7 @@ extension InfoView {
     
     fileprivate func setupAuthorLabel() {
         
-        self.authorLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 12, andTextColor: .white)
+        self.authorLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 12, textColor: .white)
         
         self.addSubview(self.authorLabel)
         
@@ -47,7 +47,7 @@ extension InfoView {
     
     fileprivate func setupDescriptionLabel() {
         
-        self.descriptionLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 12, andTextColor: .white)
+        self.descriptionLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 12, textColor: .white)
         self.descriptionLabel.isHidden = true
         
         self.addSubview(self.descriptionLabel)

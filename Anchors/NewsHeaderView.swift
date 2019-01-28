@@ -92,7 +92,7 @@ extension NewsHeaderView {
     
     fileprivate func setupDateLabel() {
         
-        self.newsDateLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 12)
+        self.newsDateLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 12)
         
         self.addSubview(self.newsDateLabel)
         
@@ -106,7 +106,7 @@ extension NewsHeaderView {
     
     fileprivate func seputTitleNewsLabel() {
         
-        self.newsTitleLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 25)
+        self.newsTitleLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 25)
         
         self.addSubview(self.newsTitleLabel)
         
@@ -134,7 +134,7 @@ extension NewsHeaderView {
     
     fileprivate func setupAnnounceLabel() {
         
-        self.newsAnnounceLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 18)
+        self.newsAnnounceLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 18)
         self.addSubview(self.newsAnnounceLabel)
         
         self.newsAnnounceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -145,7 +145,7 @@ extension NewsHeaderView {
     
     fileprivate func setupNewsTextLabel() {
         
-        self.newsTextLabel = NewsTextLabel.init(withFrame: CGRect.zero, andFontSize: 18)
+        self.newsTextLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 18)
         self.addSubview(self.newsTextLabel)
         
         self.newsTextLabel.translatesAutoresizingMaskIntoConstraints = false

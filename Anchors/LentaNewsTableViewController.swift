@@ -27,6 +27,11 @@ class LentaNewsTableViewController: UITableViewController {
             }
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
 
     // MARK: - Table view data source
 
@@ -56,7 +61,7 @@ class LentaNewsTableViewController: UITableViewController {
     }
     
     fileprivate func openNewsViewController(withNews news: SingleLatestNews) {
-        let nextViewController = NewsViewController()
+        let nextViewController = NewsScrollViewController()
         nextViewController.news = news
         nextViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(nextViewController, animated: true)

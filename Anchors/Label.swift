@@ -23,9 +23,7 @@ class NewsTextLabel: UILabel {
         self.settingsLabel()
     }
     
-    convenience init(withFrame frame: CGRect,
-                andFontSize fontSize: CGFloat,
-              andTextColor textColor: UIColor = .lentachGray) {
+    convenience init(frame: CGRect, fontSize: CGFloat, textColor: UIColor = .lentachGray) {
         self.init(frame: frame)
         
         self.font = UIFont.italicSystemFont(ofSize: fontSize)

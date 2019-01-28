@@ -20,11 +20,14 @@ class DateManager {
         return dateFormatter
     }
     
-    static func createStringDate(withSecondsIntervalSince1970 seconds: TimeInterval) -> String {
+    static func createStringDate(withSecondsIntervalSince1970 seconds: TimeInterval?) -> String? {
         
-        let date = Date.init(timeIntervalSince1970: seconds)
-        
-        return self.dateFormatter().string(from: date).lowercased()
+        if seconds != nil {
+            let date = Date.init(timeIntervalSince1970: seconds!)
+            return self.dateFormatter().string(from: date).lowercased()
+        } else {
+            return nil
+        }
     }
     
     static func createStringDateLatestActivity(fromDate date: Date) -> String {

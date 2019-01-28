@@ -1,22 +1,22 @@
 //
-//  PreviewVideoView.swift
+//  VideoContentNewsView.swift
 //  Anchors
 //
-//  Created by Andrey Malaev on 1/23/19.
+//  Created by Andrey Malaev on 1/28/19.
 //  Copyright © 2019 Andrey Malaev. All rights reserved.
 //
 
 import UIKit
 
-protocol PreviewVideoViewDelegate: class {
+protocol PreviewVideoContentViewDelegate: class {
     
-    func previewVideoViewUserPressPlayVideo(_ previewVideoView: PreviewVideoView)
+    func previewVideoContentViewDidTapPlay(_ previewVideoContentView: PreviewVideoContentView)
 }
 
-class PreviewVideoView: UIView {
+class PreviewVideoContentView: UIView {
     
     // MARK: - Delegate
-    weak var delegate: PreviewVideoViewDelegate?
+    weak var delegate: PreviewVideoContentViewDelegate?
     
     // MARK: - UI Properties
     private var previewImageView: NewsImageView!
@@ -28,6 +28,7 @@ class PreviewVideoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.isHidden = true
         self.backgroundColor = .lentachGray
         self.isUserInteractionEnabled = true
         
@@ -43,7 +44,7 @@ class PreviewVideoView: UIView {
 }
 
 // MARK: - Setup UI Constraints
-extension PreviewVideoView {
+extension PreviewVideoContentView {
     
     private func setupPreviewImageView() {
         
@@ -87,8 +88,8 @@ extension PreviewVideoView {
         self.playButton.setImage(playImage, for: .normal)
         self.playButton.setImage(playImage, for: .selected)
         
-        self.playButton.addTarget(self, action: #selector(PreviewVideoView.tapOnPlayButton), for: .touchUpInside)
-
+        self.playButton.addTarget(self, action: #selector(PreviewVideoContentView.tapOnPlayButton), for: .touchUpInside)
+        
         self.previewImageView.addSubview(self.playButton)
         
         self.playButton.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +106,7 @@ extension PreviewVideoView {
         self.addSubview(self.descriptionLabel)
         
         self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.descriptionLabel.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor, constant: +20).isActive = true
+        self.descriptionLabel.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor, constant: +10).isActive = true
         self.descriptionLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.descriptionLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         self.descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -113,16 +114,16 @@ extension PreviewVideoView {
 }
 
 // MARK: - UI Actions
-extension PreviewVideoView {
+extension PreviewVideoContentView {
     
     @objc private func tapOnPlayButton() {
         print("tap on play button")
-        self.delegate?.previewVideoViewUserPressPlayVideo(self)
+        self.delegate?.previewVideoContentViewDidTapPlay(self)
     }
 }
 
 // MARK: - Setup Data in UI
-extension PreviewVideoView {
+extension PreviewVideoContentView {
     
     func setPreviewImage(_ image: UIImage?) {
         self.previewImageView.image = image
@@ -131,4 +132,12 @@ extension PreviewVideoView {
     func setDescription(_ text: String?) {
         self.descriptionLabel.text = text
     }
+    
+    func configure(_ viewModel: PreviewVideoContentViewModel) {
+        setPreviewImage(viewModel.previewImage)
+        setDescription(viewModel.description)
+        self.isHidden = false
+        self.layoutIfNeeded()
+    }
 }
+
