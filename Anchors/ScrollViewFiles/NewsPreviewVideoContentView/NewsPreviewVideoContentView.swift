@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol PreviewVideoContentViewDelegate: class {
+protocol NewsPreviewVideoContentViewDelegate: class {
     
-    func previewVideoContentViewDidTapPlay(_ previewVideoContentView: PreviewVideoContentView)
+    func newsPreviewVideoContentViewDidTapPlayButton(_ newsPreviewVideoContentView: NewsPreviewVideoContentView)
 }
 
-class PreviewVideoContentView: UIView {
+class NewsPreviewVideoContentView: UIView {
     
     // MARK: - Delegate
-    weak var delegate: PreviewVideoContentViewDelegate?
+    weak var delegate: NewsPreviewVideoContentViewDelegate?
     
     // MARK: - UI Properties
     private var previewImageView: NewsImageView!
@@ -29,7 +29,6 @@ class PreviewVideoContentView: UIView {
         super.init(frame: frame)
         
         self.isHidden = true
-        self.backgroundColor = .lentachGray
         self.isUserInteractionEnabled = true
         
         setupPreviewImageView()
@@ -44,14 +43,14 @@ class PreviewVideoContentView: UIView {
 }
 
 // MARK: - Setup UI Constraints
-extension PreviewVideoContentView {
+extension NewsPreviewVideoContentView {
     
     private func setupPreviewImageView() {
         
         self.previewImageView = NewsImageView.init(frame: CGRect.zero)
-        self.previewImageView.isUserInteractionEnabled = true
-        
         self.addSubview(self.previewImageView)
+        
+        self.previewImageView.isUserInteractionEnabled = true
         
         self.previewImageView.translatesAutoresizingMaskIntoConstraints = false
         self.previewImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -63,12 +62,11 @@ extension PreviewVideoContentView {
     private func setupAlphaView() {
         
         self.alphaView = UIView.init(frame: self.previewImageView.frame)
+        self.previewImageView.addSubview(self.alphaView)
         self.alphaView.backgroundColor = .lentachGray
         self.alphaView.alpha = 0.3
         
         self.alphaView.isUserInteractionEnabled = true
-        
-        self.previewImageView.addSubview(self.alphaView)
         
         self.alphaView.translatesAutoresizingMaskIntoConstraints = false
         self.alphaView.topAnchor.constraint(equalTo: self.previewImageView.topAnchor).isActive = true
@@ -88,7 +86,7 @@ extension PreviewVideoContentView {
         self.playButton.setImage(playImage, for: .normal)
         self.playButton.setImage(playImage, for: .selected)
         
-        self.playButton.addTarget(self, action: #selector(PreviewVideoContentView.tapOnPlayButton), for: .touchUpInside)
+        self.playButton.addTarget(self, action: #selector(NewsPreviewVideoContentView.didTapPlayButton), for: .touchUpInside)
         
         self.previewImageView.addSubview(self.playButton)
         
@@ -101,8 +99,7 @@ extension PreviewVideoContentView {
     
     private func setupDescriptionLabel() {
         
-        self.descriptionLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 12, textColor: .white)
-        
+        self.descriptionLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 14, textColor: .white)
         self.addSubview(self.descriptionLabel)
         
         self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -114,29 +111,22 @@ extension PreviewVideoContentView {
 }
 
 // MARK: - UI Actions
-extension PreviewVideoContentView {
+extension NewsPreviewVideoContentView {
     
-    @objc private func tapOnPlayButton() {
-        print("tap on play button")
-        self.delegate?.previewVideoContentViewDidTapPlay(self)
+    @objc private func didTapPlayButton() {
+        print("tap on play button - // NewsPreviewVideoContentView")
+        self.delegate?.newsPreviewVideoContentViewDidTapPlayButton(self)
     }
 }
 
 // MARK: - Setup Data in UI
-extension PreviewVideoContentView {
-    
-    func setPreviewImage(_ image: UIImage?) {
-        self.previewImageView.image = image
-    }
-    
-    func setDescription(_ text: String?) {
-        self.descriptionLabel.text = text
-    }
-    
-    func configure(_ viewModel: PreviewVideoContentViewModel) {
-        setPreviewImage(viewModel.previewImage)
-        setDescription(viewModel.description)
+extension NewsPreviewVideoContentView {
+
+    func configure(_ viewModel: NewsPreviewVideoContentViewModel) {
+        self.previewImageView.image = viewModel.previewImage
+        self.descriptionLabel.text = viewModel.description
         self.isHidden = false
+        
         self.layoutIfNeeded()
     }
 }

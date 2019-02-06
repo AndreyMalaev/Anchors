@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class TextContentNewsView: UIView {
+final class NewsTextContentView: UIView {
     
     // MARK: - UI Properties
     private var newsTextLabel: NewsTextLabel!
@@ -21,11 +21,9 @@ final class TextContentNewsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .green
-        
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        setupNewsTextLabel()
+        setupTextLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,12 +32,11 @@ final class TextContentNewsView: UIView {
 }
 
 // MARK: - Setup UI Constraints
-extension TextContentNewsView {
+extension NewsTextContentView {
     
-    fileprivate func setupNewsTextLabel() {
+    fileprivate func setupTextLabel() {
         
         self.newsTextLabel = NewsTextLabel.init(frame: CGRect.zero, fontSize: 18)
-        self.newsTextLabel.backgroundColor = .red
         self.addSubview(self.newsTextLabel)
         
         self.newsTextLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +51,7 @@ extension TextContentNewsView {
         
         self.textSeparator = UIView.init(frame: CGRect.zero)
         self.textSeparator.backgroundColor = .lentachGray
-        self.textSeparator.alpha = 0.3
+        self.textSeparator.alpha = 0.5
         self.textSeparator.isHidden = true
         self.addSubview(self.textSeparator)
         
@@ -68,15 +65,11 @@ extension TextContentNewsView {
 }
 
 // MARK: - Setup Data In UI
-extension TextContentNewsView {
+extension NewsTextContentView {
     
-    func setTextNews(_ text: String?) {
-        self.newsTextLabel.text = text
-    }
-    
-    func configure(_ viewModel: TextContentNewsViewModel) {
+    func configure(_ viewModel: NewsTextContentViewModel) {
         if let text = viewModel.text {
-            setTextNews(text)
+            self.newsTextLabel.text = text
             self.textSeparator.isHidden = false
             self.layoutIfNeeded()
         }

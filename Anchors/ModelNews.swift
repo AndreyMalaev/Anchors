@@ -46,6 +46,12 @@ struct News: Decodable {
 
 extension News {
     
+    var imageDescription: String? {
+        get {
+            return self.newsInfo?.newsImage?.description
+        }
+    }
+    
     func textContent() -> String? {
         
         guard let contentBlocks = self.contentBlocks else { return nil }

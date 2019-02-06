@@ -61,7 +61,7 @@ class LentaNewsTableViewController: UITableViewController {
     }
     
     fileprivate func openNewsViewController(withNews news: SingleLatestNews) {
-        let nextViewController = NewsScrollViewController()
+        let nextViewController = NewsViewController()
         nextViewController.news = news
         nextViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(nextViewController, animated: true)

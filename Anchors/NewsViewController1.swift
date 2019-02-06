@@ -10,7 +10,7 @@ import UIKit
 import AVKit
 import AVFoundation
 
-class NewsViewController: UIViewController {
+class NewsViewController1: UIViewController {
     
     // model property
     var news: SingleLatestNews?
@@ -80,7 +80,7 @@ class NewsViewController: UIViewController {
 
 // MARK: - Extensions For Setup UI Controller
 // MARK: - Extensions For Setup TableView
-extension NewsViewController {
+extension NewsViewController1 {
     
     private func setupTableViewProtocols() {
         self.tableView.delegate = self
@@ -99,7 +99,7 @@ extension NewsViewController {
 }
 
 // MARK: - Extension For Setup Activity Indicator
-extension NewsViewController {
+extension NewsViewController1 {
     
     private func setupActivityIndicatorAnchors() {
         
@@ -112,7 +112,7 @@ extension NewsViewController {
 }
 
 // MARK: - Extension For Setup Activity Indicator
-extension NewsViewController {
+extension NewsViewController1 {
     
     private func setupNewsHeaderView() {
         
@@ -123,12 +123,12 @@ extension NewsViewController {
 
 // MARK: - Extensions For TableView Protocols
 // MARK: - Extension For TableView DelegateProtocol
-extension NewsViewController: UITableViewDelegate {
+extension NewsViewController1: UITableViewDelegate {
     
 }
 
 // MARK: - Extension For TableView DataSourceProtocol
-extension NewsViewController: UITableViewDataSource {
+extension NewsViewController1: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.newsContent != nil ? 2 : 0
@@ -147,7 +147,7 @@ extension NewsViewController: UITableViewDataSource {
 }
 
 // MARK: - Extension For Configure NewsHeaderView
-extension NewsViewController {
+extension NewsViewController1 {
     
     private func configureNewsHeaderViewWithAvailadleData() {
         
@@ -197,7 +197,7 @@ extension NewsViewController {
 }
 
 // MARK: - Extension For Network Request
-extension NewsViewController {
+extension NewsViewController1 {
     
     func requestNews() {
         
@@ -211,7 +211,7 @@ extension NewsViewController {
     }
 }
 
-extension NewsViewController: PreviewVideoViewDelegate {
+extension NewsViewController1: PreviewVideoViewDelegate {
     
     func previewVideoViewUserPressPlayVideo(_ previewVideoView: PreviewVideoView) {
         

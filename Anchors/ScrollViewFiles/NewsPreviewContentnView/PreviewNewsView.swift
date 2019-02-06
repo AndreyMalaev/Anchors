@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class PreviewNewsView: UIView {
+final class NewsPreviewContentView: UIView {
 
     // MARK: - UI Properties
     private var newsImageView: NewsImageView!
@@ -52,7 +52,7 @@ final class PreviewNewsView: UIView {
 }
 
 // MARK: - Setup UI Constraints
-extension PreviewNewsView {
+extension NewsPreviewContentView {
     
     fileprivate func setupNewsImageView() {
         
@@ -141,16 +141,8 @@ extension PreviewNewsView {
 }
 
 // MARK: - Setup Data In UI
-extension PreviewNewsView {
-    
-    func setNewsImage(_ image: UIImage?) {
-        self.newsImageView.image = image
-    }
-    
-    func setImageAuthor(_ text: String?) {
-        self.newsImageInfoView.setAuthor(text)
-    }
-    
+extension NewsPreviewContentView {
+
     func setImageDescription(_ text: String?) {
         let shouldExpandImageInfoView = (text != nil) ? true : false
         
@@ -159,31 +151,19 @@ extension PreviewNewsView {
         }
     }
     
-    func setDateNews(_ text: String?) {
-        self.newsDateLabel.text = text
-    }
-    
-    func setTitleNews(_ text: String?) {
-        self.newsTitleLabel.text = text
-    }
-    
-    func setAnnounceNews(_ text: String?) {
-        self.newsAnnounceLabel.text = text
-    }
-    
     func configure(_ viewModel: PreviewNewsViewModel) {
-        setNewsImage(viewModel.image)
-        setImageAuthor(viewModel.imageAuthor)
-        setDateNews(viewModel.date)
-        setTitleNews(viewModel.title)
-        setAnnounceNews(viewModel.announce)
+        self.newsImageView.image = viewModel.image
+        self.newsImageInfoView.setAuthor(viewModel.imageAuthor)
+        self.newsDateLabel.text = viewModel.date
+        self.newsTitleLabel.text = viewModel.title
+        self.newsAnnounceLabel.text = viewModel.announce
             
         self.layoutIfNeeded()
     }
 }
 
 // MARK: - Animate Update UI Constraints
-extension PreviewNewsView {
+extension NewsPreviewContentView {
     
     private func updateImageInfoViewHeightConstraint(_ shouldExpand: Bool, complete: @escaping () -> Void) {
         
