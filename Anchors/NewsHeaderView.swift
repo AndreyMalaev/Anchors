@@ -309,4 +309,5 @@ extension NewsHeaderView {
 // MARK: - NewsHeaderViewDelegate
 protocol NewsHeaderViewDelegate: class {
     func tapOnVideoContentInNewsHeaderView(_ newsHeaderView: NewsHeaderView)
+    // lols keks
 }
